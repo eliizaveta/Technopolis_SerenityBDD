@@ -2,23 +2,11 @@ package starter.steps;
 
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.WebDriver;
-import starter.page.LoginPage;
 import starter.page.MessagePage;
 
 public class MessageTestSteps {
 
-    LoginPage loginPage;
     MessagePage messagePage;
-
-    @Step("Переходим на страницу одноклассников")
-    public void openPage() {
-        loginPage.open();
-    }
-
-    @Step("Логинимся")
-    public void doLogin() {
-        loginPage.doLogin();
-    }
 
     @Step("Переходим в раздел сообщений")
     public void goToMSG(){messagePage.goToMSG();}

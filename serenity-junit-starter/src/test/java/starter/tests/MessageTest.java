@@ -5,10 +5,13 @@ import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Narrative;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.Title;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import starter.steps.LoginPageSteps;
 import starter.steps.MessageTestSteps;
 
 @RunWith(SerenityRunner.class)
@@ -16,23 +19,33 @@ import starter.steps.MessageTestSteps;
 public class MessageTest {
 
     @Steps
-    MessageTestSteps steps;
+    MessageTestSteps messageTestSteps;
+    @Steps
+    LoginPageSteps loginPageSteps;
 
     @Managed(driver = "chrome")
     WebDriver driver;
+
+    @Before
+    public void Init() {
+        loginPageSteps.openPage();
+        loginPageSteps.doLogin();
+    }
 
     @Test
     @Title("Тест на отправку и удаление сообщения")
     @Ignore
     public void MessageTest() {
-        steps.openPage();
-        steps.doLogin();
-        steps.goToMSG();
-        steps.createEmptyChat(driver);
-        steps.sendSticker(driver);
-        steps.checkMsgSent(driver);
-        steps.deleteMsg(driver);
-        steps.checkMsgDeleted(driver);
-        steps.deleteChat(driver);
+        messageTestSteps.goToMSG();
+        messageTestSteps.createEmptyChat(driver);
+        messageTestSteps.sendSticker(driver);
+        messageTestSteps.checkMsgSent(driver);
+        messageTestSteps.deleteMsg(driver);
+        messageTestSteps.checkMsgDeleted(driver);
+    }
+
+    @After
+    public void Clear() {
+        messageTestSteps.deleteChat(driver);
     }
 }

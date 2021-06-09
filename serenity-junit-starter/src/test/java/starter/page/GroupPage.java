@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class GroupPage extends PageObject {
+public class GroupPage extends DefaultPage {
 
     private By GROUPS_LOCATOR = By.xpath(".//div[contains(text(), 'Группы')]");
     private By JOIN_BUTTON = By.xpath(".//a[@class='button-pro group-join_btn __small __sec']");
@@ -13,19 +13,21 @@ public class GroupPage extends PageObject {
     private By GROUP_NAME = By.xpath(".//a[@class='o two-lines']");
     private By BUTTON = By.xpath(".//span[@class='dropdown_ac button-pro __with-arrow __arrow-svg __sec __wide']");
     private By LEAVE_BUTTON = By.xpath(".//div[@class='dropdown_n']");
-    private By CHECK_LOCATOR = By.xpath(".//a[@class='button-pro __wide']");
+    String CHECK_LOCATOR = ".//a[@class='button-pro __wide']";
 
-    public void goToGroups() {
+    public GroupPage goToGroups() {
         find(GROUPS_LOCATOR).click();
+        return this;
     }
 
     public void joinGroup() {
         find(JOIN_BUTTON).click();
     }
 
-    public void goToNewGroup() {
+    public GroupPage goToNewGroup() {
         find(ALL_BUTTON).click();
         find(GROUP_NAME).click();
+        return this;
     }
 
     public void leaveGroup() {
@@ -34,21 +36,12 @@ public class GroupPage extends PageObject {
     }
 
     public void checkJoin(WebDriver driver) {
-        Assert.assertTrue("i am not in group", amIJoin(driver));
+        Assert.assertTrue("i am not in group", isElementHere(driver, CHECK_LOCATOR));
         System.out.println("Join in group successfully");
     }
     public void checkLeave(WebDriver driver) {
-        Assert.assertFalse("I did not leave", amIJoin(driver));
+        Assert.assertFalse("I did not leave", isElementHere(driver, CHECK_LOCATOR));
         System.out.println("Leave from group successfully");
     }
 
-    private boolean amIJoin(WebDriver driver){
-
-        try{
-            driver.findElement(CHECK_LOCATOR);
-            return false;
-        } catch (Exception e) {
-            return true;
-        }
-    }
 }

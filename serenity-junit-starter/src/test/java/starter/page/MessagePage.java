@@ -8,22 +8,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-public class MessagePage extends PageObject {
+public class MessagePage extends DefaultPage {
 
     private By MSG_LOCATOR = By.xpath(".//div[@id = 'msg_toolbar_button']");
-    private By PLUS_BUTTON = By.cssSelector("msg-button[data-tsid='open_plus_button']");
-    private By CREATE_CHAT_BUTTON = By.cssSelector("msg-menu-item[data-tsid='plus_create_chat']");
-    private By CREATE_EMPTY_CHAT_BUTTON = By.cssSelector("msg-button[data-tsid='finish_create_chat_button']");
-    private By OPEN_STICKERS_BUTTON = By.cssSelector("msg-button[data-tsid='open_smiles_button']");
-    private By POPULAR_STICKER1 = By.cssSelector("msg-assets-sticker[set-id='popular_stickers']");
+    String PLUS_BUTTON = "msg-button[data-tsid='open_plus_button']";
+    String CREATE_CHAT_BUTTON = "msg-menu-item[data-tsid='plus_create_chat']";
+    String CREATE_EMPTY_CHAT_BUTTON = "msg-button[data-tsid='finish_create_chat_button']";
+    String OPEN_STICKERS_BUTTON = "msg-button[data-tsid='open_smiles_button']";
+    String POPULAR_STICKER1 = "msg-assets-sticker[set-id='popular_stickers']";
+    String ACTIONS_WITH_MSG_BUTTON = "msg-button[data-tsid='more_message']";
+    String DELETE_MSG_BUTTON = "msg-tico[data-tsid='remove_msg_button']";
+    String CONFIRM_PRIMARY = "msg-button[data-tsid='confirm-primary']";
+    String CHAT_INFO_BUTTON = "msg-button[data-tsid='chat_info_button']";
+    String LEAVE_CHAT_BUTTON = "msg-tico[data-tsid='leave-chat-btn']";
+    String TEMP_MSG = "msg-message-new[class='__removed']";
+
     private By MSG_CONTAINER = By.cssSelector("msg-message-new");
-    private By ACTIONS_WITH_MSG_BUTTON = By.cssSelector("msg-button[data-tsid='more_message']");
-    private By DELETE_MSG_BUTTON = By.cssSelector("msg-tico[data-tsid='remove_msg_button']");
-    private By CONFIRM_PRIMARY = By.cssSelector("msg-button[data-tsid='confirm-primary']");
-    private By CHAT_INFO_BUTTON = By.cssSelector("msg-button[data-tsid='chat_info_button']");
-    private By LEAVE_CHAT_BUTTON = By.cssSelector("msg-tico[data-tsid='leave-chat-btn']");
     private By ROOT_ID= By.id("msg_layer");
-    private By TEMP_MSG = By.cssSelector("msg-message-new[class='__removed']");
 
     public void goToMSG() {
         find(MSG_LOCATOR).click();
@@ -36,27 +37,12 @@ public class MessagePage extends PageObject {
         return shadowDom;
     }
     public void checkMsgSent(WebDriver driver) {
-        System.out.println(isMsgHere(driver));
-        Assert.assertFalse("Message wasn't sent", isMsgHere(driver));
+        Assert.assertFalse("Message wasn't sent", isElementHere(driver, TEMP_MSG, findShadowDomRoot(driver)));
         System.out.println("Message sent successfully");
     }
     public void checkMsgDeleted(WebDriver driver) {
-        Assert.assertTrue("Message wasn't deleted", isMsgHere(driver));
+        Assert.assertTrue("Message wasn't deleted", isElementHere(driver, TEMP_MSG, findShadowDomRoot(driver)));
         System.out.println("Message deleted successfully");
-    }
-
-    private boolean isMsgHere(WebDriver driver){
-        WebElement shadowDom = findShadowDomRoot(driver);
-        try{
-            shadowDom.findElement(TEMP_MSG);
-            return true;
-        }catch (Exception e) {
-            return false;
-        }
-    }
-
-    public void clickOnElement(WebElement shadowDom, By css) {
-        shadowDom.findElement(css).click();
     }
 
     public void createEmptyChat(WebDriver driver) {
